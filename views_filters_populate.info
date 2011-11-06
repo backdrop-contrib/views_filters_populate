@@ -1,1 +1,5 @@
 name = Views filters populate
+description = "Allows one filter to populate other filters value."
+dependencies[] = views
+package = Views
+core = 6.x
