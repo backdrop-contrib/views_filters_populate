@@ -19,19 +19,3 @@ function views_filters_populate_views_data() {
   
   return $data;
 }
-
-/**
- * Implementation of hook_views_handlers().
- */
-function views_filters_populate_views_handlers() {
-  return array(
-    'info' => array(
-      'path' => drupal_get_path('module', 'views_filters_populate') . '/views',
-    ),
-    'handlers' => array(
-      'views_filters_populate_handler_filter' => array(
-        'parent' => 'views_handler_filter',
-      ),
-    ),
-  );
-}
