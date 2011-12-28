@@ -35,7 +35,7 @@ class views_filters_populate_handler_filter extends views_handler_filter {
     parent::options_form($form, $form_state);
 
     foreach((array)$this->view->display_handler->get_handlers('filter') as $id => $filter) {
-      if ($filter != $this) {
+      if ($id != $this->options['id']) {
         $options[$id] = t($filter->definition['group']) . ':' . t($filter->definition['title']);
       }
     }
