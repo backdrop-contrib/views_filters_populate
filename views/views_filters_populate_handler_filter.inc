@@ -76,7 +76,14 @@ class views_filters_populate_handler_filter extends views_handler_filter {
     }
     foreach ($this->options['filters'] as $filter) {
       if ($filter) {
-        $this->view->filter[$filter]->value = $value;
+        // attempt to support different types of values over different filters
+        // i.e. cck integer value is an array of min, max and value
+        if (is_string($this->view->filter[$filter]->value)) {
+          $this->view->filter[$filter]->value = $value;
+        }
+        if (is_array($this->view->filter[$filter]->value) && is_string($this->view->filter[$filter]->value['value'])) {
+          $this->view->filter[$filter]->value['value'] = $value;
+        }
       }
     }
   }
