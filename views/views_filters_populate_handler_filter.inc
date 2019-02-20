@@ -14,7 +14,7 @@ class views_filters_populate_handler_filter extends views_handler_filter {
   // Don't display empty space where the operator would be.
   var $no_operator = TRUE;
   var $no_single = TRUE;
-
+  
   function admin_summary() {
     if (!empty($this->options['exposed'])) {
       return t('exposed');
@@ -37,7 +37,7 @@ class views_filters_populate_handler_filter extends views_handler_filter {
         $options[$id] = t($filter->definition['group']) . ':' . t($filter->definition['title']);
       }
     }
-
+    
     $form['filters'] = array(
       '#type' => 'checkboxes',
       '#options' => $options,
@@ -47,7 +47,7 @@ class views_filters_populate_handler_filter extends views_handler_filter {
     );
 
   }
-
+  
  /**
    * Add this filter to the query.
    *
@@ -58,11 +58,11 @@ class views_filters_populate_handler_filter extends views_handler_filter {
   function query() {
     // do nothing
   }
-
+  
   function pre_query() {
     // start with default value
     $value = $this->value;
-
+    
     // If eexposed, take data from input, as this hasn't reached the views
     // object yet
     if ($this->options['exposed']) {
@@ -74,33 +74,27 @@ class views_filters_populate_handler_filter extends views_handler_filter {
     }
     foreach ($this->options['filters'] as $filter) {
       if ($filter) {
-        // If no value is set, do not factor this filter into the query.
-        if (empty($value)) {
-          unset($this->view->filter[$filter]);
+        // attempt to support different types of values over different filters
+        // i.e. cck integer value is an array of min, max and value
+        if (is_string($this->view->filter[$filter]->value)) {
+          $this->view->filter[$filter]->value = $value;
         }
-        else {
-          // attempt to support different types of values over different filters
-          // i.e. cck integer value is an array of min, max and value
-          if (is_string($this->view->filter[$filter]->value)) {
-            $this->view->filter[$filter]->value = $value;
-          }
-          if (is_array($this->view->filter[$filter]->value) && is_string($this->view->filter[$filter]->value['value'])) {
-            $this->view->filter[$filter]->value['value'] = $value;
-          }
+        if (is_array($this->view->filter[$filter]->value) && is_string($this->view->filter[$filter]->value['value'])) {
+          $this->view->filter[$filter]->value['value'] = $value;
         }
       }
     }
   }
-
+  
   /**
    * Provide a simple textfield for equality
    */
   function value_form(&$form, &$form_state) {
-
+    
     if (!empty($form_state['exposed'])) {
       $identifier = $this->options['expose']['identifier'];
     }
-
+    
     $form['value'] = array(
       '#type' => 'textfield',
       '#title' => t('Value'),
