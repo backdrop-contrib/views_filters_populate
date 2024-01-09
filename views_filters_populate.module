@@ -1,6 +1,15 @@
 <?php
 
 /**
+ * Implements hook_autoload_info().
+ */
+function views_filters_populate_autoload_info() {
+  return [
+    'views_filters_populate_handler_filter' => 'views/views_filters_populate_handler_filter.inc',
+  ];
+}
+
+/**
  * Implementation of hook_views_api().
  */
 function views_filters_populate_views_api() {

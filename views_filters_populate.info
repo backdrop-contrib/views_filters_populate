@@ -1,10 +1,9 @@
+type = module
 name = Views filters populate
 description = "Allows one filter to populate other filters value."
 dependencies[] = views
 package = Views
-core = 7.x
-
-files[] = views_filter_populate.module
+backdrop = 1.x
 
 ; Views handlers
 files[] = views/views_filters_populate_handler_filter.inc
